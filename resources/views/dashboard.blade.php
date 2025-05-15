@@ -1,4 +1,10 @@
 @extends('layouts.app')
+@section('breadcrumb')
+    @parent
+    <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+@endsection
+
+@section('banner', 'Dashboard')
 
 @section('content')
     <!--begin::App Content-->
@@ -351,9 +357,4 @@
         <!--end::Container-->
     </div>
     <!--end::App Content-->
-@endsection
-
-@section('breadcrumb')
-    @parent
-    <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
 @endsection

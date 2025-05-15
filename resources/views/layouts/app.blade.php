@@ -25,12 +25,12 @@
                     <!--begin::Row-->
                     <div class="row">
                         <div class="col-sm-6">
-                            <h3 class="mb-0">Dashboard</h3>
+                            <h3 class="mb-0">@yield('banner')</h3>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-end">
                                 @section('breadcrumb')
-                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
                                 @show
                             </ol>
                         </div>
@@ -49,6 +49,9 @@
         @include('layouts.footer')
 
         @stack('scripts')
+
+        @include('sweetalert::alert')
+
     </div>
 
 </body>
