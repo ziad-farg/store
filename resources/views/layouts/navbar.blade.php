@@ -140,7 +140,7 @@
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                     <img src="{{ asset('img/user2-160x160.jpg') }}" class="user-image rounded-circle shadow"
                         alt="User Image" />
-                    <span class="d-none d-md-inline">Alexander Pierce</span>
+                    <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
                     <!--begin::User Image-->
@@ -165,10 +165,14 @@
                     </li>
                     <!--end::Menu Body-->
                     <!--begin::Menu Footer-->
-                    <li class="user-footer">
-                        <a href="#" class="btn btn-default btn-flat">Profile</a>
-                        <a href="#" class="btn btn-default btn-flat float-end">Sign out</a>
+                    <li class="user-footer d-flex justify-content-between align-items-center gap-2">
+                        <a href="#" class="btn btn-default btn-flat flex-fill me-1">Profile</a>
+                        <form action="{{ route('logout') }}" method="post" class="m-0 flex-fill ms-1">
+                            @csrf
+                            <button type="submit" class="btn btn-default btn-flat w-100">Log out</button>
+                        </form>
                     </li>
+
                     <!--end::Menu Footer-->
                 </ul>
             </li>
