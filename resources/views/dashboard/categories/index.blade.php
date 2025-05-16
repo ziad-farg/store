@@ -12,7 +12,7 @@
 @section('content')
 
     <div class="m-3">
-        <a href="{{ route('categories.create') }}" class="btn btn-primary">
+        <a href="{{ route('dashboard.categories.create') }}" class="btn btn-primary">
             Add New Category
         </a>
     </div>
@@ -35,14 +35,15 @@
                             <td>{{ $category->id }}</td>
                             <td>{{ $category->name }}</td>
                             <td>
-                                <div> {{ $category->parent_id ?? 'Primary' }} </div>
+                                <div> {{ $category->parent->name ?? 'Primary' }} </div>
                             </td>
                             <td>{{ $category->description }}</td>
                             <td style="display: flex; gap: 0.5rem; align-items: center;">
-                                <a href="{{ route('categories.edit', $category) }}" class="btn btn-sm btn-warning">
+                                <a href="{{ route('dashboard.categories.edit', $category) }}"
+                                    class="btn btn-sm btn-warning">
                                     Edit
                                 </a>
-                                <form action="{{ route('categories.destroy', $category) }}" method="POST"
+                                <form action="{{ route('dashboard.categories.destroy', $category) }}" method="POST"
                                     style="margin: 0;">
                                     @csrf
                                     @method('DELETE')

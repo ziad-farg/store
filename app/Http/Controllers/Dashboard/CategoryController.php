@@ -51,7 +51,7 @@ class CategoryController extends Controller
             ->autoClose(3000)
             ->timerProgressBar();
 
-        return redirect()->route('categories.index');
+        return redirect()->route('dashboard.categories.index');
     }
 
     /**
@@ -65,24 +65,62 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Category $category)
     {
-        //
+        $categories = Category::where('id', '!=', $category->id)
+            ->where(function ($query) use ($category) {
+                $query->where('parent_id', '!=', $category->id)
+                    ->orWhere('parent_id', null);
+            })->get();
+        return view('dashboard.categories.edit', compact('category', 'categories'));
     }
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCategoryRequest $request, string $id)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
-        //
+        $data = $request->validated();
+
+        $data['slug'] = Str::slug($data['name']);
+
+        $category->update($data);
+
+        if ($request->hasFile('image')) {
+            if ($category->image) {
+                $category->image->delete();
+            }
+            $category->image()->create([
+                'path' => $request->file('image')->store('categories', 'public'),
+            ]);
+        }
+
+        Alert::toast('Category updated successfully', 'success')
+            ->position('top-end')
+            ->autoClose(3000)
+            ->timerProgressBar();
+
+        return redirect()->route('dashboard.categories.index');
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Category $category)
     {
-        //
+        if ($category->image) {
+            $category->image->delete();
+        }
+
+        $category->delete();
+
+        Alert::toast('Category deleted successfully', 'success')
+            ->position('top-end')
+            ->autoClose(3000)
+            ->timerProgressBar();
+
+        return redirect()->route('dashboard.categories.index');
     }
 }
