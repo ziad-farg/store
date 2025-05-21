@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Models\Category;
 use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Http\Requests\Dashboard\Category\StoreCategoryRequest;
 use App\Http\Requests\Dashboard\Category\UpdateCategoryRequest;
@@ -16,7 +17,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
+        $categories = Category::with('image')->get();
         return view('dashboard.categories.index', compact('categories'));
     }
 
@@ -26,7 +27,8 @@ class CategoryController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('dashboard.categories.create', compact('categories'));
+        $category = new Category();
+        return view('dashboard.categories.create', compact('categories', 'category'));
     }
 
     /**
@@ -42,7 +44,7 @@ class CategoryController extends Controller
 
         if ($request->hasFile('image')) {
             $category->image()->create([
-                'path' => $request->file('image')->store('categories', 'public'),
+                'path' => $request->file('image')->store('uploads/categories', 'public'),
             ]);
         }
 
@@ -89,10 +91,11 @@ class CategoryController extends Controller
 
         if ($request->hasFile('image')) {
             if ($category->image) {
+                Storage::disk('public')->delete($category->image->path);
                 $category->image->delete();
             }
             $category->image()->create([
-                'path' => $request->file('image')->store('categories', 'public'),
+                'path' => $request->file('image')->store('uploads/categories', 'public'),
             ]);
         }
 
@@ -110,11 +113,12 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
+        $category->delete();
+
         if ($category->image) {
+            Storage::disk('public')->delete($category->image->path);
             $category->image->delete();
         }
-
-        $category->delete();
 
         Alert::toast('Category deleted successfully', 'success')
             ->position('top-end')

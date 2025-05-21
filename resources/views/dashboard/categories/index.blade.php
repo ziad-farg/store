@@ -23,6 +23,7 @@
                 <thead>
                     <tr>
                         <th style="width: 10px">#</th>
+                        <th></th>
                         <th>Name</th>
                         <th>Parent</th>
                         <th>Description</th>
@@ -33,6 +34,10 @@
                     @forelse ($categories as $category)
                         <tr class="align-middle">
                             <td>{{ $category->id }}</td>
+                            <td>
+                                <img src="{{ $category->image ? asset('storage/' . $category->image->path) : 'no image' }}"
+                                    alt="" width="50px">
+                            </td>
                             <td>{{ $category->name }}</td>
                             <td>
                                 <div> {{ $category->parent->name ?? 'Primary' }} </div>
