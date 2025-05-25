@@ -2,6 +2,9 @@
 
     {{-- Name --}}
     <div class="mb-3">
+ feature/category-component
+        <x-form.label id="name">Name</x-form.label>
+        <x-form.input name="name" :value="$category->name" />
         <label for="name" class="form-label">Name</label>
         <input type="text" @class(['form-control', 'is-invalid' => $errors->has('name')]) id="name" name="name" aria-label="Name"
             value="{{ old('name', $category->name) }}" required />
@@ -12,7 +15,7 @@
 
     {{-- Parent Category --}}
     <div class="mb-3">
-        <label for="parent_id" class="form-label">Parent Category</label>
+        <x-form.label id="parent_id">Parent Category</x-form.label>
         <select class="form-control" id="parent_id" name="parent_id" aria-label="Parent Category">
             <option value="">Primary Category</option>
             @foreach ($categories as $item)
@@ -25,8 +28,8 @@
 
     {{-- image --}}
     <div class="mb-3">
-        <label for="image" class="form-label">Image</label>
-        <input type="file" class="form-control" id="image" name="image" />
+        <x-form.label id="image">Image</x-form.label>
+        <x-form.input type="file" name="image" />
     </div>
 
     @if ($category->image)
@@ -37,9 +40,8 @@
 
     {{-- Description --}}
     <div class="mb-3">
-        <label for="description" class="form-label">Description</label>
-        <input type="text" class="form-control" id="description" name="description" aria-label="Description"
-            value="{{ old('description', $category->description) }}" />
+        <x-form.label id="description">Description</x-form.label>
+        <x-form.textarea name="description" :value="$category->description" />
     </div>
 
 </div>
