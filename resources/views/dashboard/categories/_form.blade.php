@@ -2,8 +2,15 @@
 
     {{-- Name --}}
     <div class="mb-3">
+ feature/category-component
         <x-form.label id="name">Name</x-form.label>
         <x-form.input name="name" :value="$category->name" />
+        <label for="name" class="form-label">Name</label>
+        <input type="text" @class(['form-control', 'is-invalid' => $errors->has('name')]) id="name" name="name" aria-label="Name"
+            value="{{ old('name', $category->name) }}" required />
+        @error('name')
+            <small class="text-danger">{{ $message }}</small>
+        @enderror
     </div>
 
     {{-- Parent Category --}}
