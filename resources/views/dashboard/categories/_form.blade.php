@@ -3,7 +3,7 @@
     {{-- Name --}}
     <div class="mb-3">
         <label for="name" class="form-label">Name</label>
-        <input type="text" class="form-control" id="name" name="name" aria-label="Name"
+        <input type="text" @class(['form-control', 'is-invalid' => $errors->has('name')]) id="name" name="name" aria-label="Name"
             value="{{ old('name', $category->name) }}" required />
         @error('name')
             <small class="text-danger">{{ $message }}</small>
