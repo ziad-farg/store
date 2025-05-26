@@ -18,12 +18,7 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Category::query();
-        if ($name = $request->query('name')) {
-            $query->where('name', 'like', "%{$name}%");
-        }
-
-        $categories = $query->with('image')->paginate(1);
+        $categories = Category::with('image')->search($request->query())->paginate(1);
         return view('dashboard.categories.index', compact('categories'));
     }
 
