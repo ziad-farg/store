@@ -11,10 +11,30 @@
 
 @section('content')
 
+
+
     <div class="m-3">
         <a href="{{ route('dashboard.categories.create') }}" class="btn btn-primary">
             Add New Category
         </a>
+    </div>
+
+    <div class="card card-info m-3">
+        <form action="{{ url()->current() }}" method="get" class="needs-validation">
+            <div class="card-body">
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-10">
+                        <x-form.label id="name">Category Name</x-form.label>
+                        <x-form.input type="text" name="name" value="{{ request('name') }}"
+                            placeholder="Enter category name" />
+                    </div>
+
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100 mt-4">Search</button>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
 
     <div class="card-header">
@@ -70,5 +90,9 @@
                 </tbody>
             </table>
         </div>
+        <div class="mt-3">
+            {{ $categories->withQueryString()->links() }}
+        </div>
     </div>
+
 @endsection
