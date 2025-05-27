@@ -9,15 +9,18 @@ use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Http\Requests\Dashboard\Category\StoreCategoryRequest;
 use App\Http\Requests\Dashboard\Category\UpdateCategoryRequest;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::with('image')->get();
+        $categories = Category::with('image')
+            ->search($request->query())
+            ->paginate();
         return view('dashboard.categories.index', compact('categories'));
     }
 
@@ -107,18 +110,86 @@ class CategoryController extends Controller
         return redirect()->route('dashboard.categories.index');
     }
 
-
     /**
-     * Remove the specified resource from storage.
+     * Force delete the specified category
      */
     public function destroy(Category $category)
     {
+        if ($category->image) {
+            Storage::disk('public')->delete($category->image->path);
+            $category->image->delete();
+        }
+
+        $category->forceDelete();
+
+        Alert::toast('Category deleted successfully', 'success')
+            ->position('top-end')
+            ->autoClose(3000)
+            ->timerProgressBar();
+
+        return redirect()->route('dashboard.categories.index');
+    }
+
+    /**
+     * archive the specified category.
+     */
+    public function delete(Category $category)
+    {
         $category->delete();
+
+        Alert::toast('Category archived successfully', 'success')
+            ->position('top-end')
+            ->autoClose(3000)
+            ->timerProgressBar();
+
+        return redirect()->route('dashboard.categories.index');
+    }
+
+    /**
+     * Display a listing of the trashed categories.
+     */
+    public function trashed(Request $request)
+    {
+        $categories = Category::onlyTrashed()
+            ->with('image')
+            ->search($request->query())
+            ->paginate();
+
+        return view('dashboard.categories.trashed', compact('categories'));
+    }
+
+
+    /**
+     * Restore the specified category from the trash.
+     */
+    public function restore(int $id)
+    {
+
+        $category = Category::withTrashed()->findOrFail($id);
+
+        $category->restore();
+
+        Alert::toast('Category restored successfully', 'success')
+            ->position('top-end')
+            ->autoClose(3000)
+            ->timerProgressBar();
+
+        return redirect()->route('dashboard.categories.index');
+    }
+
+    /**
+     * Force delete when the category is trashed.
+     */
+    public function forceDelete(int $id)
+    {
+        $category = Category::withTrashed()->findOrFail($id);
 
         if ($category->image) {
             Storage::disk('public')->delete($category->image->path);
             $category->image->delete();
         }
+
+        $category->forceDelete();
 
         Alert::toast('Category deleted successfully', 'success')
             ->position('top-end')

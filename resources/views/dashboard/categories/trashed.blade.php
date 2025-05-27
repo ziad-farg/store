@@ -1,22 +1,20 @@
 @extends('layouts.app')
-@section('title', 'Categories')
+@section('title', 'Trashed Categories')
 
-@section('banner', 'Categories')
+@section('banner', 'Trashed Categories')
 
 
 @section('breadcrumb')
     @parent
-    <li class="breadcrumb-item active" aria-current="page">Category</li>
+    <li class="breadcrumb-item"><a href="{{ route('dashboard.categories.index') }}">Category</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Trashed Category</li>
 @endsection
 
 @section('content')
 
     <div class="m-3">
-        <a href="{{ route('dashboard.categories.create') }}" class="btn btn-primary">
-            Add New Category
-        </a>
-        <a href="{{ route('dashboard.categories.trashed') }}" class="btn btn-dark">
-            Trahed Categories
+        <a href="{{ route('dashboard.categories.index') }}" class="btn btn-info">
+            Back
         </a>
     </div>
 
@@ -65,20 +63,16 @@
                             </td>
                             <td>{{ $category->description }}</td>
                             <td style="display: flex; gap: 0.5rem; align-items: center;">
-                                <a href="{{ route('dashboard.categories.edit', $category) }}"
-                                    class="btn btn-sm btn-warning">
-                                    Edit
-                                </a>
-                                <form action="{{ route('dashboard.categories.delete', $category) }}" method="POST"
+                                <form action="{{ route('dashboard.categories.restore', $category) }}" method="POST"
                                     style="margin: 0;">
                                     @csrf
                                     @method('PUT')
                                     <button type="submit" class="btn btn-sm btn-info"
-                                        onclick="return confirm('Are you sure you want to archive this category?')">
-                                        Archive
+                                        onclick="return confirm('Are you sure you want to restore this category?')">
+                                        Restore
                                     </button>
                                 </form>
-                                <form action="{{ route('dashboard.categories.destroy', $category) }}" method="POST"
+                                <form action="{{ route('dashboard.categories.forceDelete', $category) }}" method="POST"
                                     style="margin: 0;">
                                     @csrf
                                     @method('DELETE')

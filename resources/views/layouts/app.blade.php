@@ -44,7 +44,7 @@
         </main>
         <!--end::App Main-->
 
-        @include('layouts.sidebar')
+        <x-sidebar />
 
         @include('layouts.footer')
 
