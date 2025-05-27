@@ -42,7 +42,7 @@
                 <thead>
                     <tr>
                         <th style="width: 10px">#</th>
-                        <th></th>
+                        <th>Avatar</th>
                         <th>Name</th>
                         <th>Parent</th>
                         <th>Description</th>
@@ -52,7 +52,7 @@
                 <tbody>
                     @forelse ($categories as $category)
                         <tr class="align-middle">
-                            <td>{{ $category->id }}</td>
+                            <td>{{ $loop->iteration }}</td>
                             <td>
                                 <img src="{{ $category->image ? asset('storage/' . $category->image->path) : 'no image' }}"
                                     alt="" width="50px">
