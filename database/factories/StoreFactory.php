@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Enums\OpeningStatus;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +18,14 @@ class StoreFactory extends Factory
      */
     public function definition(): array
     {
+        $name = $this->faker->unique()->company();
+
         return [
-            //
+            'name' => $name,
+            'address' => $this->faker->address(),
+            'slug' => Str::slug($name),
+            'description' => $this->faker->sentence(4),
+            'opening_status' => $this->faker->randomElement(OpeningStatus::cases())->value,
         ];
     }
 }
