@@ -2,9 +2,9 @@
 
 namespace App\Enums;
 
-enum ProductStatus: string
+enum ProductStatus: int
 {
-    case Active = 'active';
-    case Draft = 'draft';
-    case Archived = 'archived';
+    case ACTIVE = 1;
+    case DRAFT = 2;
+    case ARCHIVED = 3;
 }

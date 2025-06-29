@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('address');
             $table->string('slug')->unique();
             $table->text('description')->nullable();
-            $table->string('opening_status')->default('closed');
+            $table->tinyInteger('opening_status')->default(1)->comment('1: open, 2: closed');
             $table->timestamps();
         });
     }

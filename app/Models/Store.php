@@ -10,6 +10,14 @@ class Store extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'address',
+        'slug',
+        'description',
+        'opening_status',
+    ];
+
     protected $casts = [
         'opening_status' => OpeningStatus::class,
     ];
