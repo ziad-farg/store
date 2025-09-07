@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Enums\CategoryStatus;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Category extends Model
 {
@@ -16,6 +17,11 @@ class Category extends Model
         'description',
         'slug',
         'parent_id',
+        'category_status',
+    ];
+
+    protected $casts = [
+        'category_status' => CategoryStatus::class,
     ];
 
     // use this method for searching categories
