@@ -1,11 +1,11 @@
  <!--begin::Sidebar-->
- <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
+ <aside class="shadow app-sidebar bg-body-secondary" data-bs-theme="dark">
      <!--begin::Sidebar Brand-->
      <div class="sidebar-brand">
          <!--begin::Brand Link-->
-         <a href="./index.html" class="brand-link">
+         <a href="{{ route('dashboard.home') }}" class="brand-link">
              <!--begin::Brand Image-->
-             <img src="{{ asset('img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image opacity-75 shadow" />
+             <img src="{{ asset('img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="shadow opacity-75 brand-image" />
              <!--end::Brand Image-->
              <!--begin::Brand Text-->
              <span class="brand-text fw-light">{{ config('app.name') }}</span>
