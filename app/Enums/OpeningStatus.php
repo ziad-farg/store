@@ -2,8 +2,8 @@
 
 namespace App\Enums;
 
-enum OpeningStatus: string
+enum OpeningStatus: int
 {
-    case OPEN = 'open';
-    case CLOSED = 'closed';
+    case OPEN = 1;
+    case CLOSED = 0;
 }

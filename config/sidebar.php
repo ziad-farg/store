@@ -13,4 +13,10 @@ return [
         'route' => 'dashboard.categories.index',
         'active' => 'dashboard.categories.*'
     ],
+    [
+        'name' => 'Products',
+        'icon' => 'nav-icon bi bi-speedometer',
+        'route' => 'dashboard.products.index',
+        'active' => 'dashboard.products.*'
+    ]
 ];

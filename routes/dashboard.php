@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Dashboard\ProductController;
 use App\Http\Controllers\Dashboard\CategoryController;
 
 
@@ -19,7 +20,17 @@ Route::middleware('auth')->as('dashboard.')->prefix('dashboard')->group(function
     // force delete categories in the trash
     Route::delete('categories/{category}/force-delete', [CategoryController::class, 'forceDelete'])->name('categories.forceDelete');
 
+    // trashed products
+    Route::get('products/trashed', [ProductController::class, 'trashed'])->name('products.trashed');
+    // restore products from trash
+    Route::put('products/{category}/restore', [ProductController::class, 'restore'])->name('products.restore');
+    // archive products
+    Route::put('products/{category}/delete', [ProductController::class, 'delete'])->name('products.delete');
+    // force delete products in the trash
+    Route::delete('products/{category}/force-delete', [ProductController::class, 'forceDelete'])->name('products.forceDelete');
+
     Route::resources([
         'categories' => CategoryController::class,
+        'products' => ProductController::class,
     ]);
 });
