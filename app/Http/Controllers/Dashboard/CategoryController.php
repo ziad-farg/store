@@ -18,7 +18,7 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $categories = Category::with('image')
+        $categories = Category::with('images')
             ->search($request->query())
             ->paginate();
         return view('dashboard.categories.index', compact('categories'));
