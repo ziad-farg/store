@@ -2,7 +2,6 @@
 
     {{-- Name --}}
     <div class="mb-3">
-        feature/category-component
         <x-form.label id="name">Name</x-form.label>
         <x-form.input name="name" :value="$category->name" />
         @error('name')
