@@ -4,9 +4,6 @@
     <div class="mb-3">
         <x-form.label id="name">Name</x-form.label>
         <x-form.input name="name" :value="$category->name" />
-        @error('name')
-            <small class="text-danger">{{ $message }}</small>
-        @enderror
     </div>
 
     {{-- Parent Category --}}
