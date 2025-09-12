@@ -45,11 +45,7 @@ class CategoryController extends Controller
 
         $category = Category::create($data);
 
-        if ($request->hasFile('image')) {
-            $category->image()->create([
-                'path' => $request->file('image')->store('uploads/categories', 'public'),
-            ]);
-        }
+        $this->uploadImage($request, $category);
 
         Alert::toast('Category added successfully', 'success')
             ->position('top-end')
@@ -92,15 +88,7 @@ class CategoryController extends Controller
 
         $category->update($data);
 
-        if ($request->hasFile('image')) {
-            if ($category->image) {
-                Storage::disk('public')->delete($category->image->path);
-                $category->image->delete();
-            }
-            $category->image()->create([
-                'path' => $request->file('image')->store('uploads/categories', 'public'),
-            ]);
-        }
+        $this->uploadImage($request, $category);
 
         Alert::toast('Category updated successfully', 'success')
             ->position('top-end')
@@ -110,15 +98,29 @@ class CategoryController extends Controller
         return redirect()->route('dashboard.categories.index');
     }
 
+    // upload image to storage and save path to database
+    protected function uploadImage(Request $request, Category $category)
+    {
+        if (!$request->hasFile('image')) {
+            return;
+        }
+
+        if ($category->image) {
+            Storage::disk('public')->delete($category->image->path);
+            $category->image->delete();
+        }
+
+        return $category->image()->create([
+            'path' => $request->file('image')->store('uploads/categories', 'public'),
+        ]);
+    }
+
     /**
      * Force delete the specified category
      */
     public function destroy(Category $category)
     {
-        if ($category->image) {
-            Storage::disk('public')->delete($category->image->path);
-            $category->image->delete();
-        }
+        $this->deleteImage($category);
 
         $category->forceDelete();
 
@@ -184,10 +186,7 @@ class CategoryController extends Controller
     {
         $category = Category::withTrashed()->findOrFail($id);
 
-        if ($category->image) {
-            Storage::disk('public')->delete($category->image->path);
-            $category->image->delete();
-        }
+        $this->deleteImage($category);
 
         $category->forceDelete();
 
@@ -197,5 +196,14 @@ class CategoryController extends Controller
             ->timerProgressBar();
 
         return redirect()->route('dashboard.categories.index');
+    }
+
+    // delete image from storage and database
+    protected function deleteImage(Category $category)
+    {
+        if ($category->image) {
+            Storage::disk('public')->delete($category->image->path);
+            $category->image->delete();
+        }
     }
 }

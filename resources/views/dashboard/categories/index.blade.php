@@ -16,7 +16,7 @@
             Add New Category
         </a>
         <a href="{{ route('dashboard.categories.trashed') }}" class="btn btn-dark">
-            Trahed Categories
+            Archived Categories
         </a>
     </div>
 
