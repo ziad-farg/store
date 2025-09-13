@@ -19,8 +19,15 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         $categories = Category::with('images')
-            ->search($request->query())
+            ->search($request->query()) // the request query get all query parameters from the url
+            // order by parent_id nulls first, then by parent_id, then by name
+            // when parent_id is null, it will be 0, otherwise 1
+            // 0 equals first, 1 equals last
+            ->orderByRaw("CASE WHEN parent_id IS NULL THEN 0 ELSE 1 END")
+            ->orderBy('parent_id')
+            ->orderBy('name')
             ->paginate();
+
         return view('dashboard.categories.index', compact('categories'));
     }
 
