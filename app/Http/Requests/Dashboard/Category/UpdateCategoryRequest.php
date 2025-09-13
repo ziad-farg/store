@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Dashboard\Category;
 
+use App\Rules\Filter;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateCategoryRequest extends FormRequest
 {
@@ -22,7 +24,15 @@ class UpdateCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255|min:3|unique:categories,name,' . $this->category->id,
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                'min:3',
+                Rule::unique('categories', 'name')->ignore($this->category->id),
+                // custom rule to prevent the name 'laravel'
+                new Filter(),
+            ],
             'description' => 'nullable|string|max:1000',
             'parent_id' => 'nullable|exists:categories,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
