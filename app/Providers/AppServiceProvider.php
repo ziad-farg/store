@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,5 +22,12 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Paginator::useBootstrapFive();
+        /*
+            * Custom validation rule to filter specific words
+            * Usage: 'filter:word1,word2,...'
+        */
+        Validator::extend('filter', function ($attribute, $value, $params) {
+            return !(in_array(strtolower($value), $params));
+        }, "the :attribute is invalid");
     }
 }
