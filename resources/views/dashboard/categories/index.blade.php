@@ -92,7 +92,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center">No categories found</td>
+                            <td colspan="6" class="text-center">No categories found</td>
                         </tr>
                     @endforelse
 
