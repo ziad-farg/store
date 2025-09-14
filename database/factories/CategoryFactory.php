@@ -19,7 +19,9 @@ class CategoryFactory extends Factory
      */
     public function definition(): array
     {
-        $name = fake()->department;
+        // i use package faker to generate avatar image called "mbezhanov/laravel-faker-provider-collection"
+        $name = fake()->unique()->department;
+        // when use $this->faker->unique()->department; that's not work
 
         return [
             'parent_id' => Category::inRandomOrder()->first()?->id ?? null,

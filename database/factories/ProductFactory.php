@@ -21,7 +21,7 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
-        $name = $this->faker->unique()->name();
+        $name = fake()->unique()->productName;
         return [
             'category_id' => Category::inRandomOrder()->first()->id,
             'store_id' => Store::inRandomOrder()->first()->id,
