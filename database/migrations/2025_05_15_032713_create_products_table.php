@@ -19,9 +19,9 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->decimal('price', 10, 2)->default(0);
             $table->float('compare_price', 10, 2)->nullable();
-            $table->json('options')->nullable();
+            $table->json('options')->nullable()->comment('e.g., color, size, etc.');
             $table->float('rating')->default(0);
-            $table->boolean('featured')->default(false);
+            $table->boolean('featured')->default(false)->comment('1: featured product, 0: not featured product');
             $table->tinyInteger('status')->default(1)->comment('1: active, 2:draft, 3: inactive');
             $table->text('description')->nullable();
             $table->softDeletes();

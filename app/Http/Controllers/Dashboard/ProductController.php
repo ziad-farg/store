@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Models\Product;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
@@ -14,7 +15,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::paginate();
+        $products = Product::with('image')
+            ->search(request()->query())
+            ->paginate();
         return view('dashboard.products.index', compact('products'));
     }
 
@@ -64,5 +67,15 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         //
+    }
+
+    public function trashed(Request $request)
+    {
+        $categories = Product::onlyTrashed()
+            ->with('image')
+            ->search($request->query())
+            ->paginate();
+
+        return view('dashboard.categories.trashed', compact('categories'));
     }
 }

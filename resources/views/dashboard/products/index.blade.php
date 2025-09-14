@@ -62,8 +62,16 @@
                         <tr class="align-middle">
                             <td>{{ $loop->iteration }}</td>
                             <td>
-                                <img src="{{ $product->image ? asset('storage/' . $product->image->path) : 'no image' }}"
-                                    alt="" width="50px">
+                                @if ($product->image)
+                                    @if (Str::startsWith($product->image->path, ['http://', 'https://']))
+                                        <img src="{{ $product->image->path }}" alt="" width="50px">
+                                    @else
+                                        <img src="{{ asset('storage/' . $product->image->path) }}" alt=""
+                                            width="50px">
+                                    @endif
+                                @else
+                                    no image
+                                @endif
                             </td>
                             <td>{{ $product->name }}</td>
                             <td>
@@ -73,8 +81,10 @@
                             <td>{{ $product->price }}</td>
                             <td>{{ $product->compare_price }}</td>
                             <td>{{ $product->rating }}</td>
-                            <td>{{ $product->featured }}</td>
-                            <td>{{ $product->status }}</td>
+                            <td>{{ $product->featured ? 'Featured' : 'Normal' }}</td>
+                            <td>
+                                {{ $product->status_label }}
+                            </td>
                             <td>{{ $product->description }}</td>
                             <td style="display: flex; gap: 0.5rem; align-items: center;">
                                 <a href="{{ route('dashboard.products.edit', $product) }}" class="btn btn-sm btn-warning">
