@@ -174,7 +174,7 @@ class CategoryController extends Controller
     public function restore(int $id)
     {
 
-        $category = Category::withTrashed()->findOrFail($id);
+        $category = Category::onlyTrashed()->findOrFail($id);
 
         $category->restore();
 
@@ -191,11 +191,11 @@ class CategoryController extends Controller
      */
     public function forceDelete(int $id)
     {
-        $category = Category::withTrashed()->findOrFail($id);
-
-        $this->deleteImage($category);
+        $category = Category::onlyTrashed()->findOrFail($id);
 
         $category->forceDelete();
+
+        $this->deleteImage($category);
 
         Alert::toast('Category deleted successfully', 'success')
             ->position('top-end')
