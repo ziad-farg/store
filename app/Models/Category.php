@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\CategoryStatus;
+use App\Models\Scopes\StoreScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -32,9 +33,11 @@ class Category extends Model
         });
     }
 
+    // [withDefault] use when the parent is null return a default value
+    // to avoid make condition in the view
     public function parent()
     {
-        return $this->belongsTo(Category::class, 'parent_id');
+        return $this->belongsTo(Category::class, 'parent_id')->withDefault(['name' => 'Primary']);
     }
 
     public function children()

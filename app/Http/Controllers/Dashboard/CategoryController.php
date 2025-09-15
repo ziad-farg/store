@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Support\Str;
+use App\Enums\ProductStatus;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Http\Requests\Dashboard\Category\StoreCategoryRequest;
 use App\Http\Requests\Dashboard\Category\UpdateCategoryRequest;
-use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -18,7 +20,14 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $categories = Category::with('images')
+        $categories = Category::with('images', 'parent', 'image')
+            // we use withCount without closure function to count all products in the category that status is active or draft or archived
+            // ->withCount('products') // Add products count to prevent N+1 queries and get the count of products in each category
+            // we use closure function when we want to count specific condition
+            // like that we use status active only
+            ->withCount(['products' => function ($query) {
+                $query->where('status', ProductStatus::ACTIVE);
+            }])
             ->search($request->query()) // the request query get all query parameters from the url
             // order by parent_id nulls first, then by parent_id, then by name
             // when parent_id is null, it will be 0, otherwise 1
@@ -65,9 +74,24 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Category $category, Request $request)
     {
-        //
+        // Load necessary relationships for the show page
+        $category->load([
+            'image',
+            'parent',
+            'children.image',
+        ]);
+
+        // Load counts for better performance
+        $category->loadCount(['products', 'children']);
+
+        // Paginate products for better performance
+        $products = $category->products()
+            ->with(['image', 'store'])
+            ->paginate(10);
+
+        return view('dashboard.categories.show', compact('category', 'products'));
     }
 
     /**
@@ -160,7 +184,8 @@ class CategoryController extends Controller
     public function trashed(Request $request)
     {
         $categories = Category::onlyTrashed()
-            ->with('image')
+            ->with('image', 'parent')
+            ->withCount('products')
             ->search($request->query())
             ->paginate();
 

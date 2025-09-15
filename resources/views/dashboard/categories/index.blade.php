@@ -47,6 +47,7 @@
                         <th>Avatar</th>
                         <th>Name</th>
                         <th>Parent</th>
+                        <th>Product Count</th>
                         <th>Description</th>
                         <th style="width: 40px">Action</th>
                     </tr>
@@ -55,14 +56,13 @@
                     @forelse ($categories as $category)
                         <tr class="align-middle">
                             <td>{{ $loop->iteration }}</td>
-                            <td>
+                            <td class="text-center">
                                 {{-- i make the statement becase in devlop i use fack data but in product id don't need the first condition --}}
                                 @if ($category->image)
                                     @if (Str::startsWith($category->image->path, ['http://', 'https://']))
                                         <img src="{{ $category->image->path }}" alt="" width="50px">
                                     @else
-                                        <img src="{{ asset('storage/' . $category->image->path) }}" alt=""
-                                            width="50px">
+                                        <img src="{{ asset($category->image->path) }}" alt="" width="50px">
                                     @endif
                                 @else
                                     no image
@@ -70,13 +70,18 @@
                             </td>
                             <td>{{ $category->name }}</td>
                             <td>
-                                <div> {{ $category->parent->name ?? 'Primary' }} </div>
+                                <div> {{ $category->parent->name }} </div>
                             </td>
+                            <td class="text-center">{{ $category->products_count }}</td>
                             <td>{{ $category->description }}</td>
                             <td style="display: flex; gap: 0.5rem; align-items: center;">
+                                <a href="{{ route('dashboard.categories.show', $category) }}"
+                                    class="btn btn-sm btn-primary">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
                                 <a href="{{ route('dashboard.categories.edit', $category) }}"
                                     class="btn btn-sm btn-warning">
-                                    Edit
+                                    <i class="fas fa-edit"></i> Edit
                                 </a>
                                 <form action="{{ route('dashboard.categories.delete', $category) }}" method="POST"
                                     style="margin: 0;">
@@ -84,7 +89,7 @@
                                     @method('PUT')
                                     <button type="submit" class="btn btn-sm btn-info"
                                         onclick="return confirm('Are you sure you want to archive this category?')">
-                                        Archive
+                                        <i class="fas fa-archive"></i> Archive
                                     </button>
                                 </form>
                                 <form action="{{ route('dashboard.categories.destroy', $category) }}" method="POST"
@@ -93,7 +98,7 @@
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-danger"
                                         onclick="return confirm('Are you sure you want to delete this category?')">
-                                        Delete
+                                        <i class="fas fa-trash"></i> Delete
                                     </button>
                                 </form>
                             </td>
@@ -101,7 +106,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center">No categories found</td>
+                            <td colspan="7" class="text-center">No categories found</td>
                         </tr>
                     @endforelse
 
