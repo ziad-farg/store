@@ -15,7 +15,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::with('image')
+        $products = Product::with('image', 'category', 'store')
             ->search(request()->query())
             ->paginate();
         return view('dashboard.products.index', compact('products'));

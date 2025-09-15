@@ -49,7 +49,6 @@
                         <th>Category</th>
                         <th>Store</th>
                         <th>Price</th>
-                        <th>Compare Price</th>
                         <th>Rating</th>
                         <th>Featured</th>
                         <th>Status</th>
@@ -66,8 +65,7 @@
                                     @if (Str::startsWith($product->image->path, ['http://', 'https://']))
                                         <img src="{{ $product->image->path }}" alt="" width="50px">
                                     @else
-                                        <img src="{{ asset('storage/' . $product->image->path) }}" alt=""
-                                            width="50px">
+                                        <img src="{{ asset($product->image->path) }}" alt="" width="50px">
                                     @endif
                                 @else
                                     no image
@@ -78,10 +76,19 @@
                                 <div> {{ $product->category->name ?? 'Primary' }} </div>
                             </td>
                             <td>{{ $product->store->name }}</td>
-                            <td>{{ $product->price }}</td>
-                            <td>{{ $product->compare_price }}</td>
+                            <td>
+                                <strong>${{ number_format($product->price, 2) }}</strong>
+                                @if ($product->compare_price)
+                                    <br><small
+                                        class="text-muted text-decoration-line-through">${{ number_format($product->compare_price, 2) }}</small>
+                                @endif
+                            </td>
                             <td>{{ $product->rating }}</td>
-                            <td>{{ $product->featured ? 'Featured' : 'Normal' }}</td>
+                            <td>
+                                <span class="badge {{ $product->featured ? 'text-bg-danger' : 'text-bg-secondary' }}">
+                                    {{ $product->featured ? 'Featured' : 'Normal' }}
+                                </span>
+                            </td>
                             <td>
                                 {{ $product->status_label }}
                             </td>
@@ -113,11 +120,9 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center">No products found</td>
+                            <td colspan="11" class="text-center">No products found</td>
                         </tr>
                     @endforelse
-
-
                 </tbody>
             </table>
         </div>
