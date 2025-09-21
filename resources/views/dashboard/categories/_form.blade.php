@@ -9,7 +9,13 @@
     {{-- Parent Category --}}
     <div class="mb-3">
         <x-form.label id="parent_id">Parent Category</x-form.label>
-        <x-form.select name="parent_id" :items="$categories" :select="$category->parent_id" />
+        <x-form.select first_option="Primary Category" name="parent_id" :items="$categories" :select="$category->parent_id" />
+    </div>
+
+    {{-- Description --}}
+    <div class="mb-3">
+        <x-form.label id="description">Description</x-form.label>
+        <x-form.textarea name="description" :value="$category->description" />
     </div>
 
     {{-- image --}}
@@ -19,17 +25,14 @@
     </div>
 
     @if ($category->image)
-        <div class="mb-3">
-            <img src="{{ asset('storage/' . $category->image->path) }}" alt="Current Image" width="100px">
-        </div>
+        @if (Str::startsWith($category->image->path, ['http://', 'https://']))
+            <img src="{{ $category->image->path }}" alt="" width="50px">
+        @else
+            <img src="{{ asset($category->image->path) }}" alt="" width="50px">
+        @endif
+    @else
+        no image
     @endif
-
-    {{-- Description --}}
-    <div class="mb-3">
-        <x-form.label id="description">Description</x-form.label>
-        <x-form.textarea name="description" :value="$category->description" />
-    </div>
-
 </div>
 
 <div class="card-footer">

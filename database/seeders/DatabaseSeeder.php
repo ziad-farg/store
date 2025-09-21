@@ -4,11 +4,12 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\Category;
-use App\Models\Image;
-use App\Models\Product;
-use App\Models\Store;
 use App\Models\User;
+use App\Models\Image;
+use App\Models\Store;
+use App\Models\Product;
+use App\Models\Profile;
+use App\Models\Category;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -56,6 +57,22 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
         $this->call(UserSeeder::class);
+
+        $users = User::all();
+
+        foreach ($users as $user) {
+            Profile::factory()->create(['user_id' => $user->id]);
+        }
+
+
+        // make faker images for profiles
+        Profile::each(function ($profile) {
+            Image::factory(1)->create([
+                'imageable_id' => $profile->user_id,
+                'imageable_type' => Profile::class,
+            ]);
+        });
     }
 }
