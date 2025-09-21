@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\ProductController;
+use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\CategoryController;
 use App\Http\Controllers\Dashboard\DashboardController;
 
@@ -28,6 +29,11 @@ Route::middleware('auth')->as('dashboard.')->prefix('dashboard')->group(function
     Route::put('products/{category}/delete', [ProductController::class, 'delete'])->name('products.delete');
     // force delete products in the trash
     Route::delete('products/{category}/force-delete', [ProductController::class, 'forceDelete'])->name('products.forceDelete');
+
+    // profile routes
+    // Profile routes operate on the authenticated user's profile (no id required).
+    Route::get('profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('profile', [ProfileController::class, 'update'])->name('profile.update');
 
     Route::resources([
         'categories' => CategoryController::class,

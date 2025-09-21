@@ -54,4 +54,10 @@ class User extends Authenticatable
     {
         return $this->morphOne(Image::class, 'imageable');
     }
+
+    public function profile()
+    {
+        // we use withDefault to avoid null errors when user has no profile
+        return $this->hasOne(Profile::class, 'user_id', 'id')->withDefault();
+    }
 }

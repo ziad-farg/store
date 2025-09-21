@@ -138,17 +138,42 @@
             <!--begin::User Menu Dropdown-->
             <li class="nav-item dropdown user-menu">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                    <img src="{{ asset('img/user2-160x160.jpg') }}" class="user-image rounded-circle shadow"
-                        alt="User Image" />
+
+                    <!-- start::The user image in the navbar-->
+                    @if (Auth::user()->profile->image)
+                        @if (Str::startsWith(Auth::user()->profile->image->path, ['http://', 'https://']))
+                            <img class="user-image rounded-circle shadow"
+                                src="{{ Auth::user()->profile->image->path }}" alt="" width="30px">
+                        @else
+                            <img class="user-image rounded-circle shadow"
+                                src="{{ asset(Auth::user()->profile->image->path) }}" alt="" width="30px">
+                        @endif
+                    @else
+                        no image
+                    @endif
+                    <!-- end::The user image in the navbar-->
+
                     <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
                     <!--begin::User Image-->
                     <li class="user-header text-bg-primary">
-                        <img src="{{ asset('img/user2-160x160.jpg') }}" class="rounded-circle shadow"
-                            alt="User Image" />
+                        <!-- start::The user image in the navbar-->
+                        @if (Auth::user()->profile->image)
+                            @if (Str::startsWith(Auth::user()->profile->image->path, ['http://', 'https://']))
+                                <img class="user-image rounded-circle shadow"
+                                    src="{{ Auth::user()->profile->image->path }}" alt="" width="30px">
+                            @else
+                                <img class="user-image rounded-circle shadow"
+                                    src="{{ asset(Auth::user()->profile->image->path) }}" alt=""
+                                    width="30px">
+                            @endif
+                        @else
+                            no image
+                        @endif
+                        <!-- end::The user image in the navbar-->
                         <p>
-                            Alexander Pierce - Web Developer
+                            {{ Auth::user()->name }} - Web Developer
                             <small>Member since Nov. 2023</small>
                         </p>
                     </li>
@@ -166,7 +191,8 @@
                     <!--end::Menu Body-->
                     <!--begin::Menu Footer-->
                     <li class="user-footer d-flex justify-content-between align-items-center gap-2">
-                        <a href="#" class="btn btn-default btn-flat flex-fill me-1">Profile</a>
+                        <a href="{{ route('dashboard.profile.edit') }}"
+                            class="btn btn-default btn-flat flex-fill me-1">Profile</a>
                         <form action="{{ route('logout') }}" method="post" class="m-0 flex-fill ms-1">
                             @csrf
                             <button type="submit" class="btn btn-default btn-flat w-100">Log out</button>
