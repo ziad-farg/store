@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+
 use App\Enums\ProductStatus;
 use App\Models\Scopes\StoreScope;
 use Illuminate\Database\Eloquent\Builder;
@@ -12,6 +13,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Product extends Model
 {
     use HasFactory, SoftDeletes;
+
+    protected $fillable = [
+        'store_id',
+        'category_id',
+        'name',
+        'slug',
+        'price',
+        'compare_price',
+        'options',
+        'rating',
+        'featured',
+        'status',
+        'description',
+    ];
 
     protected $casts = [
         'status' => ProductStatus::class,
@@ -54,5 +69,24 @@ class Product extends Model
     public function getStatusLabelAttribute()
     {
         return $this->status == ProductStatus::ACTIVE ? 'Active' : ($this->status == ProductStatus::DRAFT ? 'Draft' : ($this->status == ProductStatus::ARCHIVED ? 'Archived' : 'Unknown'));
+    }
+    /**
+     * Get the Featured label for display
+     */
+    public function getFeaturedLabelAttribute()
+    {
+        return $this->featured ? 'Featured' : 'Normal';
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(
+            Tag::class,     // the first parameter is the related model
+            'product_tags', // the second parameter is the pivot table name
+            'product_id',   // the third parameter is the foreign key of the current model in the pivot table
+            'tag_id',       // the fourth parameter is the foreign key of the related model in the pivot table
+            'id',           // the fifth parameter is the local key of the current model
+            'id'            // the sixth parameter is the local key of the related model
+        );
     }
 }
