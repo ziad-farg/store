@@ -16,7 +16,7 @@
             Add New Product
         </a>
         <a href="{{ route('dashboard.products.trashed') }}" class="btn btn-dark">
-            Trahed Products
+            Archived Products
         </a>
     </div>
 
@@ -86,7 +86,7 @@
                             <td>{{ $product->rating }}</td>
                             <td>
                                 <span class="badge {{ $product->featured ? 'text-bg-danger' : 'text-bg-secondary' }}">
-                                    {{ $product->featured ? 'Featured' : 'Normal' }}
+                                    {{ $product->featured_label }}
                                 </span>
                             </td>
                             <td>
@@ -94,8 +94,11 @@
                             </td>
                             <td>{{ $product->description }}</td>
                             <td style="display: flex; gap: 0.5rem; align-items: center;">
+                                <a href="{{ route('dashboard.products.show', $product) }}" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
                                 <a href="{{ route('dashboard.products.edit', $product) }}" class="btn btn-sm btn-warning">
-                                    Edit
+                                    <i class="fas fa-edit"></i> Edit
                                 </a>
                                 <form action="{{ route('dashboard.products.delete', $product) }}" method="POST"
                                     style="margin: 0;">
@@ -103,7 +106,7 @@
                                     @method('PUT')
                                     <button type="submit" class="btn btn-sm btn-info"
                                         onclick="return confirm('Are you sure you want to archive this product?')">
-                                        Archive
+                                        <i class="fas fa-archive"></i> Archive
                                     </button>
                                 </form>
                                 <form action="{{ route('dashboard.products.destroy', $product) }}" method="POST"
@@ -112,7 +115,7 @@
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-danger"
                                         onclick="return confirm('Are you sure you want to delete this product?')">
-                                        Delete
+                                        <i class="fas fa-trash"></i> Delete
                                     </button>
                                 </form>
                             </td>

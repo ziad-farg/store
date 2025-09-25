@@ -24,11 +24,11 @@ Route::middleware('auth')->as('dashboard.')->prefix('dashboard')->group(function
     // trashed products
     Route::get('products/trashed', [ProductController::class, 'trashed'])->name('products.trashed');
     // restore products from trash
-    Route::put('products/{category}/restore', [ProductController::class, 'restore'])->name('products.restore');
+    Route::put('products/{product}/restore', [ProductController::class, 'restore'])->name('products.restore');
     // archive products
-    Route::put('products/{category}/delete', [ProductController::class, 'delete'])->name('products.delete');
+    Route::put('products/{product}/delete', [ProductController::class, 'delete'])->name('products.delete');
     // force delete products in the trash
-    Route::delete('products/{category}/force-delete', [ProductController::class, 'forceDelete'])->name('products.forceDelete');
+    Route::delete('products/{product}/force-delete', [ProductController::class, 'forceDelete'])->name('products.forceDelete');
 
     // profile routes
     // Profile routes operate on the authenticated user's profile (no id required).
