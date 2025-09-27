@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -83,7 +82,20 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => env('APP_LOCALE', 'en'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Application Currency Configuration
+    |--------------------------------------------------------------------------
+    |
+    | The application currency determines the default currency that will be used
+    | throughout the application. You can set this value to any of the currencies
+    | supported by your application.
+    |
+    */
+
+    'currency' => env('APP_CURRENCY', 'USD'),
 
     /*
     |--------------------------------------------------------------------------
@@ -183,6 +195,9 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
+        'Currency' => App\Helpers\Currency::class,
+        'ProductStatus' => App\Enums\ProductStatus::class,
+        'Gender' => App\Enums\Gender::class,
     ])->toArray(),
 
 ];

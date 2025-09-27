@@ -3,10 +3,11 @@
 namespace App\Models;
 
 
+use Illuminate\Support\Str;
 use App\Enums\ProductStatus;
 use App\Models\Scopes\StoreScope;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -46,6 +47,12 @@ class Product extends Model
         $builder->when($search['name'] ?? false, function ($builder, $value) {
             $builder->where('name', 'like', "%{$value}%");
         });
+    }
+
+    // scope to get only active products
+    public function scopeActive(Builder $builder)
+    {
+        $builder->where('status', ProductStatus::ACTIVE);
     }
 
     public function image()
@@ -88,5 +95,32 @@ class Product extends Model
             'id',           // the fifth parameter is the local key of the current model
             'id'            // the sixth parameter is the local key of the related model
         );
+    }
+
+    // accessor to get the full image url
+    public function getImageUrlAttribute()
+    {
+        // if there is no image return a placeholder image
+        if (!$this->image) {
+            return "https://placehold.co/335x335";
+        }
+
+        // if the image path is not a full url then we will assume that it is a relative path
+        if (!Str::startsWith($this->image->path, ['http://', 'https://'])) {
+            return asset('storage/' . $this->image->path);
+        }
+
+        // otherwise return the image path as is
+        return $this->image->path;
+    }
+
+    // accessor to get sale percentage
+    public function getSalePercentageAttribute()
+    {
+        if (!$this->compare_price) {
+            return;
+        }
+
+        return -floor((($this->compare_price - $this->price) / $this->compare_price) * 100) . '%';
     }
 }

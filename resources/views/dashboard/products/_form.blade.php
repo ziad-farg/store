@@ -35,7 +35,7 @@
     {{-- Product Status --}}
     <div class="mb-3">
         <x-form.label id="status">Product Status</x-form.label>
-        <x-form.radio name="status" :items="\App\Enums\ProductStatus::keyValueMap()" :checked="$product->status?->value" />
+        <x-form.radio name="status" :items="ProductStatus::keyValueMap()" :checked="$product->status?->value" />
     </div>
 
     {{-- Featured --}}
@@ -62,15 +62,7 @@
         <x-form.input type="file" name="image" />
     </div>
 
-    @if ($product->image)
-        @if (Str::startsWith($product->image->path, ['http://', 'https://']))
-            <img src="{{ $product->image->path }}" alt="" width="50px">
-        @else
-            <img src="{{ asset($product->image->path) }}" alt="" width="50px">
-        @endif
-    @else
-        no image
-    @endif
+    <img src="{{ $product->image_url }}" alt="" width="50px">
 </div>
 
 <div class="card-footer">
