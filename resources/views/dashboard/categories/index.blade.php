@@ -57,16 +57,7 @@
                         <tr class="align-middle">
                             <td>{{ $loop->iteration }}</td>
                             <td class="text-center">
-                                {{-- i make the statement becase in devlop i use fack data but in product id don't need the first condition --}}
-                                @if ($category->image)
-                                    @if (Str::startsWith($category->image->path, ['http://', 'https://']))
-                                        <img src="{{ $category->image->path }}" alt="" width="50px">
-                                    @else
-                                        <img src="{{ asset($category->image->path) }}" alt="" width="50px">
-                                    @endif
-                                @else
-                                    no image
-                                @endif
+                                <img src="{{ $category->image_url }}" alt="" width="50px">
                             </td>
                             <td>{{ $category->name }}</td>
                             <td>

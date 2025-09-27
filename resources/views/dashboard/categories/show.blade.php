@@ -90,21 +90,8 @@
                         <h3 class="card-title"><i class="fas fa-image"></i> Category Image</h3>
                     </div>
                     <div class="card-body text-center">
-                        @if ($category->image)
-                            @if (Str::startsWith($category->image->path, ['http://', 'https://']))
-                                <img src="{{ $category->image->path }}" alt="{{ $category->name }}"
-                                    class="img-fluid rounded shadow" style="max-width: 100%; max-height: 300px;">
-                            @else
-                                <img src="{{ asset('storage/' . $category->image->path) }}" alt="{{ $category->name }}"
-                                    class="img-fluid rounded shadow" style="max-width: 100%; max-height: 300px;">
-                            @endif
-                        @else
-                            <div class="text-muted p-5">
-                                <i class="fas fa-image fa-5x mb-3"></i>
-                                <h5>No Image Available</h5>
-                                <p>This category doesn't have an image yet.</p>
-                            </div>
-                        @endif
+                        <img src="{{ $category->image_url }}" alt="{{ $category->name }}" class="img-fluid rounded shadow"
+                            style="max-width: 100%; max-height: 300px;">
                     </div>
                 </div>
             </div>
@@ -127,22 +114,9 @@
                                     <div class="col-md-4 col-lg-3 mb-4">
                                         <div class="card h-100 shadow-sm">
                                             <div class="card-body text-center">
-                                                @if ($child->image)
-                                                    @if (Str::startsWith($child->image->path, ['http://', 'https://']))
-                                                        <img src="{{ $child->image->path }}" alt="{{ $child->name }}"
-                                                            class="rounded-circle mb-3"
-                                                            style="width: 80px; height: 80px; object-fit: cover;">
-                                                    @else
-                                                        <img src="{{ asset('storage/' . $child->image->path) }}"
-                                                            alt="{{ $child->name }}" class="rounded-circle mb-3"
-                                                            style="width: 80px; height: 80px; object-fit: cover;">
-                                                    @endif
-                                                @else
-                                                    <div class="bg-light rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center"
-                                                        style="width: 80px; height: 80px;">
-                                                        <i class="fas fa-tag text-muted fa-2x"></i>
-                                                    </div>
-                                                @endif
+                                                <img src="{{ $child->image_url }}" alt="{{ $child->name }}"
+                                                    class="rounded-circle mb-3"
+                                                    style="width: 80px; height: 80px; object-fit: cover;">
                                                 <h6 class="card-title">{{ $child->name }}</h6>
                                                 <small class="text-muted d-block mb-3">
                                                     {{ $child->products_count ?? $child->products()->count() }} products
@@ -190,17 +164,8 @@
                                         @foreach ($products as $product)
                                             <tr>
                                                 <td>
-                                                    @if ($product->image)
-                                                        @if (Str::startsWith($product->image->path, ['http://', 'https://']))
-                                                            <img src="{{ $product->image->path }}" alt=""
-                                                                width="50px">
-                                                        @else
-                                                            <img src="{{ asset($product->image->path) }}" alt=""
-                                                                width="50px">
-                                                        @endif
-                                                    @else
-                                                        no image
-                                                    @endif
+                                                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
+                                                        width="50px">
                                                 </td>
                                                 <td>
                                                     <strong>{{ $product->name }}</strong>

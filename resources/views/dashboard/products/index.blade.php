@@ -61,15 +61,7 @@
                         <tr class="align-middle">
                             <td>{{ $loop->iteration }}</td>
                             <td>
-                                @if ($product->image)
-                                    @if (Str::startsWith($product->image->path, ['http://', 'https://']))
-                                        <img src="{{ $product->image->path }}" alt="" width="50px">
-                                    @else
-                                        <img src="{{ asset($product->image->path) }}" alt="" width="50px">
-                                    @endif
-                                @else
-                                    no image
-                                @endif
+                                <img src="{{ $product->image_url }}" alt="" width="50px">
                             </td>
                             <td>{{ $product->name }}</td>
                             <td>

@@ -22,7 +22,7 @@
     {{-- Gender --}}
     <div class="mb-3">
         <x-form.label id="gender">Gender</x-form.label>
-        <x-form.radio name="gender" :items="\App\Enums\Gender::keyValueMap()" :checked="$user->profile->gender?->value" />
+        <x-form.radio name="gender" :items="Gender::keyValueMap()" :checked="$user->profile->gender?->value" />
     </div>
 
     {{-- Street Address --}}

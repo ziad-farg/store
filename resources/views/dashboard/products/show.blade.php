@@ -102,17 +102,8 @@
                         <h3 class="card-title"><i class="fas fa-image"></i> Product Image</h3>
                     </div>
                     <div class="card-body text-center">
-                        @if ($product->image)
-                            <img src="{{ Str::startsWith($product->image->path, ['http://', 'https://']) ? $product->image->path : asset('storage/' . $product->image->path) }}"
-                                alt="{{ $product->name }}" class="img-fluid rounded shadow"
-                                style="max-width: 100%; max-height: 300px;">
-                        @else
-                            <div class="text-muted p-5">
-                                <i class="fas fa-image fa-5x mb-3"></i>
-                                <h5>No Image Available</h5>
-                                <p>This product doesn't have an image yet.</p>
-                            </div>
-                        @endif
+                        <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="img-fluid rounded shadow"
+                            style="max-width: 100%; max-height: 300px;">
                     </div>
                 </div>
             </div>
