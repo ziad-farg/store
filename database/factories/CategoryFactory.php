@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Store;
 use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -24,6 +25,7 @@ class CategoryFactory extends Factory
         // when use $this->faker->unique()->department; that's not work
 
         return [
+            'store_id' => Store::inRandomOrder()->first()->id,
             'parent_id' => Category::inRandomOrder()->first()?->id ?? null,
             'name' => $name,
             'slug' => Str::slug($name),

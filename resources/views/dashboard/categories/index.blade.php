@@ -63,7 +63,7 @@
                             <td>
                                 <div> {{ $category->parent->name }} </div>
                             </td>
-                            <td class="text-center">{{ $category->products_count }}</td>
+                            <td class="text-center">{{ $category->products->count() }}</td>
                             <td>{{ $category->description }}</td>
                             <td style="display: flex; gap: 0.5rem; align-items: center;">
                                 <a href="{{ route('dashboard.categories.show', $category) }}"

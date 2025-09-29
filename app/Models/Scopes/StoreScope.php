@@ -10,6 +10,7 @@ class StoreScope implements Scope
 {
     /**
      * Apply the scope to a given Eloquent query builder.
+     * this scope will filter the products by the authenticated user's store_id
      */
     public function apply(Builder $builder, Model $model): void
     {

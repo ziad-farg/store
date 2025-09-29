@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('phone_number')->nullable()->unique();
             $table->foreignId('store_id')->nullable()->constrained()->nullOnDelete();
+            $table->timestamp('last_active_at');
             $table->rememberToken();
             $table->timestamps();
         });

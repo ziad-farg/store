@@ -26,6 +26,12 @@ class Category extends Model
         'category_status' => CategoryStatus::class,
     ];
 
+    // use the global scope to filter categories by the authenticated user's store
+    protected static function booted()
+    {
+        static::addGlobalScope(new StoreScope);
+    }
+
     // use this method for searching categories
     public function scopeSearch(Builder $builder, $search)
     {

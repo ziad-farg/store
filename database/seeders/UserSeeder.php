@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
@@ -16,11 +15,22 @@ class UserSeeder extends Seeder
     {
         $users = [
             [
+                'name' => 'super admin',
+                'email' => 'super@gmail.com',
+                'password' => Hash::make('123456789'),
+                'phone_number' => '0123456781',
+                'store_id' => null,
+                'last_active_at' => now(),
+                'role' => 'super-admin',
+            ],
+            [
                 'name' => 'admin',
                 'email' => 'admin@gmail.com',
                 'password' => Hash::make('123456789'),
                 'phone_number' => '0123456789',
-                'store_id' => null,
+                'store_id' => 5,
+                'last_active_at' => now(),
+                'role' => 'admin',
             ],
             [
                 'name' => 'ziad farg',
@@ -28,6 +38,8 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('123456789'),
                 'phone_number' => '0123456788',
                 'store_id' => 1,
+                'last_active_at' => now(),
+                'role' => 'admin',
             ],
             [
                 'name' => 'ali sharara',
@@ -35,6 +47,8 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('123456789'),
                 'phone_number' => '0123456787',
                 'store_id' => 1,
+                'last_active_at' => now(),
+                'role' => 'admin',
             ],
             [
                 'name' => 'mohamed medht',
@@ -42,10 +56,34 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('123456789'),
                 'phone_number' => '0123456786',
                 'store_id' => 2,
+                'last_active_at' => now(),
+                'role' => 'admin',
+            ],
+            [
+                'name' => 'abdolla magdy',
+                'email' => 'magdy@gmail.com',
+                'password' => Hash::make('123456789'),
+                'phone_number' => '0123456785',
+                'store_id' => 3,
+                'last_active_at' => now(),
+                'role' => 'user',
+            ],
+            [
+                'name' => 'nasser shata',
+                'email' => 'nasser@gmail.com',
+                'password' => Hash::make('123456789'),
+                'phone_number' => '0123456784',
+                'store_id' => 4,
+                'last_active_at' => now(),
+                'role' => 'user',
             ]
         ];
-        foreach ($users as $user) {
-            User::create($user);
+        foreach ($users as $userData) {
+            $role = $userData['role'];
+            unset($userData['role']);
+
+            $user = User::create($userData);
+            $user->assignRole($role); // Assign the role using Spatie
         }
     }
 }

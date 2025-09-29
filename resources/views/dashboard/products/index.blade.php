@@ -64,9 +64,7 @@
                                 <img src="{{ $product->image_url }}" alt="" width="50px">
                             </td>
                             <td>{{ $product->name }}</td>
-                            <td>
-                                <div> {{ $product->category->name ?? 'Primary' }} </div>
-                            </td>
+                            <td>{{ $product->category->name ?? 'Primary' }}</td>
                             <td>{{ $product->store->name }}</td>
                             <td>
                                 <strong>${{ number_format($product->price, 2) }}</strong>
