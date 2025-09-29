@@ -11,6 +11,7 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "realrashid/sweet-alert": "^7.3",
+        "spatie/laravel-permission": "^6.21",
         "symfony/intl": "^7.3"
     },
     "require-dev": {
