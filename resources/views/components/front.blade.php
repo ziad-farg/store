@@ -516,6 +516,8 @@
     <script src="{{ asset('assets/js/main.js') }}"></script>
 
     @stack('scripts')
+
+    @include('sweetalert::alert')
 </body>
 
 </html>
