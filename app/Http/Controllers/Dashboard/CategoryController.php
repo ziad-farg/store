@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Models\Product;
-use App\Models\Category;
-use Illuminate\Support\Str;
 use App\Enums\ProductStatus;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
-use RealRashid\SweetAlert\Facades\Alert;
 use App\Http\Requests\Dashboard\Category\StoreCategoryRequest;
 use App\Http\Requests\Dashboard\Category\UpdateCategoryRequest;
+use App\Models\Category;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class CategoryController extends Controller
 {
@@ -32,7 +31,7 @@ class CategoryController extends Controller
             // order by parent_id nulls first, then by parent_id, then by name
             // when parent_id is null, it will be 0, otherwise 1
             // 0 equals first, 1 equals last
-            ->orderByRaw("CASE WHEN parent_id IS NULL THEN 0 ELSE 1 END")
+            ->orderByRaw('CASE WHEN parent_id IS NULL THEN 0 ELSE 1 END')
             ->orderBy('parent_id')
             ->orderBy('name')
             ->paginate();
@@ -46,7 +45,8 @@ class CategoryController extends Controller
     public function create()
     {
         $categories = Category::all();
-        $category = new Category();
+        $category = new Category;
+
         return view('dashboard.categories.create', compact('categories', 'category'));
     }
 
@@ -55,11 +55,11 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        $data = $request->validated();
+        $validated = $request->validated();
 
-        $data['slug'] = Str::slug($data['name']);
+        $validated['slug'] = Str::slug($validated['name']);
 
-        $category = Category::create($data);
+        $category = Category::create($validated);
 
         $this->uploadImage($request, $category);
 
@@ -104,9 +104,9 @@ class CategoryController extends Controller
                 $query->where('parent_id', '!=', $category->id)
                     ->orWhere('parent_id', null);
             })->get();
+
         return view('dashboard.categories.edit', compact('category', 'categories'));
     }
-
 
     /**
      * Update the specified resource in storage.
@@ -132,7 +132,7 @@ class CategoryController extends Controller
     // upload image to storage and save path to database
     protected function uploadImage(Request $request, Category $category)
     {
-        if (!$request->hasFile('image')) {
+        if (! $request->hasFile('image')) {
             return;
         }
 
@@ -191,7 +191,6 @@ class CategoryController extends Controller
 
         return view('dashboard.categories.trashed', compact('categories'));
     }
-
 
     /**
      * Restore the specified category from the trash.
