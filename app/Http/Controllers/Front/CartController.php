@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Helpers\Currency;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Front\Cart\StoreCartRequest;
 use App\Http\Requests\Front\Cart\UpdateCartRequest;
 use App\Models\Cart;
 use App\Models\Product;
 use App\repositories\Cart\CartRepository;
+use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class CartController extends Controller
@@ -24,11 +26,9 @@ class CartController extends Controller
      */
     public function index()
     {
-        $carts = $this->cart->all();
-        $total = $this->cart->total($carts);
-        $totalDiscount = $this->cart->totalDiscount($carts);
+        $carts = $this->cart;
 
-        return view('front.cart.index', compact('carts', 'total', 'totalDiscount'));
+        return view('front.cart.index', compact('carts'));
     }
 
     /**
@@ -55,28 +55,47 @@ class CartController extends Controller
     public function update(UpdateCartRequest $request, Cart $cart)
     {
         $validated = $request->validated();
-        $this->cart->update($cart->product, $validated['quantity']);
 
-        Alert::toast('Cart updated successfully', 'success')
-            ->position('top-end')
-            ->autoClose(3000)
-            ->timerProgressBar();
+        $this->cart->update($cart->id, $validated['quantity']);
 
-        return redirect()->route('front.cart.index');
+        // refresh the model to reflect new quantity / relations
+        $cart->refresh();
+
+        // calculate values
+        $subtotal = ($cart->product->price ?? 0) * $cart->quantity;
+        $total = $this->cart->total();
+        $totalDiscount = $this->cart->totalDiscount();
+
+        return response()->json([
+            'message' => 'Cart updated successfully',
+            'subtotal' => $subtotal,
+            'formatted_subtotal' => Currency::format($subtotal),
+            'total' => $total,
+            'formatted_total' => Currency::format($total),
+            'totalDiscount' => $totalDiscount,
+            'formatted_totalDiscount' => Currency::format($totalDiscount),
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Cart $cart)
+    public function destroy(Request $request, Cart $cart)
     {
-        $this->cart->delete($cart->product);
+        // Use repository to delete (ensure delete filters by cookie/user inside repository)
+        $this->cart->delete($cart->id); // return int count
 
-        Alert::toast('Product removed successfully from cart', 'success')
-            ->position('top-end')
-            ->autoClose(3000)
-            ->timerProgressBar();
+        // Recalculate totals after deletion
+        $total = $this->cart->total();
+        $totalDiscount = $this->cart->totalDiscount();
 
-        return redirect()->route('front.cart.index');
+        return response()->json([
+            'message' => 'Item removed from cart',
+            'total' => $total,
+            'formatted_total' => Currency::format($total),
+            'totalDiscount' => $totalDiscount,
+            'formatted_totalDiscount' => Currency::format($totalDiscount),
+        ]);
+
     }
 }

@@ -11,13 +11,13 @@ interface CartRepository
 
     public function create(Product $product, int $quantity = 1);
 
-    public function update(Product $product, int $quantity = 1): int;
+    public function update($id, int $quantity = 1): int;
 
-    public function delete(Product $product): int;
+    public function delete($id): int;
 
     public function clear(): int;
 
-    public function total(Collection $carts): float;
+    public function total(): float;
 
-    public function totalDiscount(Collection $carts): float;
+    public function totalDiscount(): float;
 }

@@ -55,9 +55,9 @@
                     </div>
                 </div>
                 <!-- End Cart List Title -->
-                @foreach ($carts as $cart)
+                @foreach ($carts->all() as $cart)
                     <!-- Cart Single List list -->
-                    <div class="cart-single-list">
+                    <div class="cart-single-list" id="{{ $cart->id }}">
                         <div class="row align-items-center">
                             <div class="col-lg-1 col-md-1 col-12">
                                 <a href="{{ $cart->product->image_url }}">
@@ -77,7 +77,11 @@
                             </div>
                             <div class="col-lg-2 col-md-2 col-12">
                                 <div class="count-input">
-                                    <x-form.select name="quantity" :select="old('quantity', $cart->quantity)" :items="range(1, 5)" />
+                                    <div class="count-input">
+                                        <x-form.select name="quantity" class="item-quantity" :select="old('quantity', $cart->quantity)"
+                                            :items="range(1, 5)" data-id="{{ $cart->id }}"
+                                            data-url="{{ route('front.cart.update', $cart->id) }}" />
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-lg-2 col-md-2 col-12">
@@ -88,13 +92,10 @@
                                 </p>
                             </div>
                             <div class="col-lg-1 col-md-2 col-12">
-                                <form action="{{ route('front.cart.destroy', $cart->id) }}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="remove-item">
-                                        <i class="lni lni-close"></i>
-                                    </button>
-                                </form>
+                                <a class="remove-item" data-id="{{ $cart->id }}"
+                                    data-url="{{ route('front.cart.destroy', $cart->id) }}" href="javascript:void(0)">
+                                    <i class="lni lni-close"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -122,8 +123,8 @@
                                 <div class="right">
                                     <ul>
                                         <li>Shipping<span>Free</span></li>
-                                        <li>You Save<span>{{ Currency::format($totalDiscount) }}</span></li>
-                                        <li>Cart Subtotal<span>{{ Currency::format($total) }}</span></li>
+                                        <li>You Save<span>{{ Currency::format($carts->totalDiscount()) }}</span></li>
+                                        <li>Cart Subtotal<span>{{ Currency::format($carts->total()) }}</span></li>
                                     </ul>
                                     <div class="button">
                                         <a href="checkout.html" class="btn">Checkout</a>
@@ -140,4 +141,14 @@
     </div>
     <!--/ End Shopping Cart -->
 
+    @push('scripts')
+        <script>
+            window.csrf_token = '{{ csrf_token() }}';
+        </script>
+
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+        @vite('resources/js/cart.js')
+    @endpush
 </x-front-layout>
