@@ -73,4 +73,11 @@ class CartModelRepository implements CartRepository
             return ($cart->product->compare_price - $cart->product->price) * $cart->quantity;
         });
     }
+
+    public function totalBeforeDiscount(): float
+    {
+        return $this->all()->sum(function (Cart $cart) {
+            return $cart->product->compare_price * $cart->quantity;
+        });
+    }
 }
