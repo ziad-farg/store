@@ -20,4 +20,6 @@ interface CartRepository
     public function total(): float;
 
     public function totalDiscount(): float;
+
+    public function totalBeforeDiscount(): float;
 }

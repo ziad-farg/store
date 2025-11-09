@@ -12,12 +12,8 @@
                     </div>
                     <div class="col-lg-6 col-md-6 col-12">
                         <ul class="breadcrumb-nav">
-                            <li>
-                                <a href="{{ route('home') }}"><i class="lni lni-home"></i> Home</a>
-                            </li>
-                            <li>
-                                <a href="{{ route('products.index') }}"><i class="lni lni-home"></i> Shop</a>
-                            </li>
+                            <li><a href="{{ route('home') }}"><i class="lni lni-home"></i> Home</a></li>
+                            <li><a href="{{ route('products.index') }}"><i class="lni lni-home"></i> Shop</a></li>
                             <li>Cart</li>
                         </ul>
                     </div>
@@ -127,7 +123,7 @@
                                         <li>Cart Subtotal<span>{{ Currency::format($carts->total()) }}</span></li>
                                     </ul>
                                     <div class="button">
-                                        <a href="checkout.html" class="btn">Checkout</a>
+                                        <a href="{{ route('front.checkout') }}" class="btn">Checkout</a>
                                         <a href="product-grids.html" class="btn btn-alt">Continue shopping</a>
                                     </div>
                                 </div>

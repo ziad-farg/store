@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->date('birthday')->nullable();
-            $table->tinyInteger('gender');
+            $table->tinyInteger('gender')->default(1)->comment('1: MALE, 2: FEMALE');
 
             // Address information
             $table->string('street_address')->nullable();
