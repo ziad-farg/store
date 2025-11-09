@@ -2,12 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Models\Store;
-use App\Models\Product;
-use App\Models\Category;
-use Illuminate\Support\Str;
 use App\Enums\ProductStatus;
+use App\Models\Category;
+use App\Models\Store;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Product>
@@ -22,6 +21,7 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         $name = fake()->unique()->productName;
+
         return [
             'category_id' => Category::inRandomOrder()->first()->id,
             'store_id' => Store::inRandomOrder()->first()->id,
@@ -29,6 +29,7 @@ class ProductFactory extends Factory
             'slug' => Str::slug($name),
             'price' => $this->faker->randomFloat(1, 1, 499),
             'compare_price' => $this->faker->randomFloat(1, 500, 1000),
+            'quantity' => $this->faker->numberBetween(100, 1000),
             'options' => $this->faker->optional()->randomElement([
                 ['color' => 'red'],
                 ['size' => 'M'],

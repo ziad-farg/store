@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Events\OrderCreated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Front\Checkout\StoreCheckoutRequest;
 use App\Models\Order;
@@ -9,6 +10,7 @@ use App\Models\OrderItem;
 use App\repositories\Cart\CartRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use RealRashid\SweetAlert\Facades\Alert;
 use Symfony\Component\Intl\Countries;
 
 class CheckoutController extends Controller
@@ -65,14 +67,23 @@ class CheckoutController extends Controller
                 }
             }
 
-            // clear the cart via repository (this deletes DB rows)
-            $cart->clear();
+            /*
+            * clear the cart via repository (this deletes DB rows)
+            * and deducted product quantities
+            */
+            // event('order.created', $order, Auth::user() ?? null);
+            event(new OrderCreated($order, Auth::user() ?? null));
 
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
             throw $e;
         }
+
+        Alert::toast('Order created successfully', 'success')
+            ->position('top-end')
+            ->autoClose(3000)
+            ->timerProgressBar();
 
         return redirect()->route('home');
     }
