@@ -5,22 +5,30 @@ namespace App\Models;
 use App\Enums\OpeningStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Store extends Model
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     // for remembering the varables and consts
     const CREATED_AT = 'created_at';
-    const UPDATED_AT = 'updated_at';
-    const DELETED_AT = 'deleted_at';
-    protected $table = 'stores';
-    protected $primaryKey = 'id';
-    protected $keyType = 'int';
-    protected $connection = 'mysql';
-    public $incrementing = true;
-    public $timestamps = true;
 
+    const UPDATED_AT = 'updated_at';
+
+    const DELETED_AT = 'deleted_at';
+
+    protected $table = 'stores';
+
+    protected $primaryKey = 'id';
+
+    protected $keyType = 'int';
+
+    protected $connection = 'mysql';
+
+    public $incrementing = true;
+
+    public $timestamps = true;
 
     protected $fillable = [
         'name',

@@ -25,8 +25,8 @@ class DeductProductQuantity
         // Product::where('id', $item->product->id)
         //     ->decrement('quantity', $item->quantity);
         // }
-
-        foreach ($event->order->products as $product) {
+        $order = $event->order;
+        foreach ($order->products as $product) {
             $product->decrement('quantity', $product->order_item->quantity);
         }
     }
